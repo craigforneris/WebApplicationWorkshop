@@ -12,6 +12,7 @@
 </div>
 </template>
 <script>
+
 export default {
   props: ["model"],
   data() {
@@ -20,26 +21,46 @@ export default {
     }
   },
   methods: {
+
+
     fileUploaded(files) {
+
+
       const component = this;
+
       component.file = component.$refs.myGeoFile.files[0];
+
       if (!component.file) return;
-      let formData = new FormData($("form#geo-upload")); //empty
+
+      console.log("File Selected For Processing", component.file);
+
+      // Create a new FormData object. 
+      let formData = new FormData();
+
+      //let formData = new FormData($("form#geo-upload")); 
+
+      //empty
       formData.append("geo", component.file);
 
+      //console.log("Form Data", formData);
+
       // See https://stackoverflow.com/questions/5392344/sending-multipart-formdata-with-jquery-ajax
+      
       $.ajax({
+        
         url: '/api/create-model',
         data: formData,
         cache: false,
         contentType: false,
         processData: false,
         method: 'POST',
+        
         success: (response) => {
           component.$emit("parsedModel", response);
           component.$refs.myGeoFile.files = null;
           component.file = null;
         }
+
       });
     }
   },

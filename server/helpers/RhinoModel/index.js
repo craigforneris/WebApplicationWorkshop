@@ -5,12 +5,17 @@ let RhinoCompute = require("server/external/RhinoCompute");
  * A data structure for the contents of a file to create a 3d visualization
  * using Rhino geometry
  */
+
+RhinoCompute.url = "http://localhost:8081/";
+
 class RhinoModel {
 	/**
 	 * Constructing this model
 	 * @param {File3dm} model Rhino file containing massing representation
 	 */
+
 	constructor(model) {
+		console.log("constructor model: ", model);
 		this.model = model;
 		this.breps = model.breps || [];
 		this.curves = model.curves || [];
@@ -23,6 +28,7 @@ class RhinoModel {
 	 * @param  {File3dm} model Rhino file containing massing representation
 	 */
 	populate(model) {
+		console.log(" populate model: ", model);
 		var objectTable = model.objects();
 		for (var i = 0; i < objectTable.count; i++) {
 			var modelObj = objectTable.get(i);
@@ -42,6 +48,7 @@ class RhinoModel {
 	 * @param  {File3dmObject} obj Model object from File3dm
 	 */
 	pushBrep(obj) {
+		console.log("pushBrep obj: ", obj);
 		let instance = this;
 		instance.breps.push({
 			geometry: obj.geometry(),
@@ -56,6 +63,7 @@ class RhinoModel {
 	 * @param  {Polycurve} obj Curve object
 	 */
 	pushCurve(obj) {
+		console.log("pushCurve obj: ", obj);
 		let instance = this;
 		instance.curves.push({
 			geometry: obj,
@@ -70,6 +78,8 @@ class RhinoModel {
 	 * @return {AreaMassProperties}	Areas, centroid, moments, etc. of the intersected curves
 	 */
 	computeIntersection(plane) {
+
+		console.log("computeIntersection plane: ", plane);
 		const rM = this;
 		/**
 		 * Translate the breps
@@ -109,6 +119,8 @@ class RhinoModel {
 	 */
 	// This for reference: https://flaviocopes.com/javascript-async-await-array-map/
 	async computeMeshes() {
+
+		console.log("computeMeshes: ");
 		const rM = this;
 
 		/**
@@ -119,10 +131,18 @@ class RhinoModel {
 		 * @return {Object}      brep geometry
 		 */
 		const fetchMeshes = (m, brep, i) => {
+
+			console.log("fetchMeshes m: ", m);
+			console.log("fetchMeshes brep: ", brep);
+			console.log("fetchMeshes i: ", i);
 			//RhinoCompute calls return promises!
+
+			
+			
 			return RhinoCompute.Mesh.createFromBrep(brep).then(result => {
 				const meshes = result.map(r => rhino3dm.CommonObject.decode(r));
 				m.breps[i].meshes = meshes;
+
 				return;
 			});
 		};
@@ -134,6 +154,7 @@ class RhinoModel {
 		 * @return {Promise}      the RhinoCompute meshes
 		 */
 		const asyncFetchMeshes = async (brep, i) => {
+			console.log("asyncFetchMeshes brep: ", brep);
 			const brepGeo = rM.breps[i]["geometry"];
 			return await fetchMeshes(rM, brepGeo, i);
 		};
@@ -149,6 +170,8 @@ class RhinoModel {
 		 * then return the model
 		 */
 		return await Promise.all(fetchArr).then((results) => {
+			console.log("results: ", results);
+
 			return rM;
 		}).catch((err) => {
 			console.log("error in promise.all", err);

@@ -4,7 +4,7 @@ const chalk = require("chalk");
 const bodyParser = require("body-parser");
 const session = require('express-session');
 const MongoStore = require("connect-mongo")(session);
-const dotenv = require('dotenv').config({path:'D:\TURF\source\WebApplicationWorkshop\.env'});
+const dotenv = require('dotenv').config({path:'./.env'});
 
 
 module.exports = function(app, port) {
@@ -19,7 +19,7 @@ module.exports = function(app, port) {
 	app.use(express.static(path.join(app.root, '../node_modules/three')));
 	app.use(express.static(path.join(app.root, '../node_modules/rhino3dm')));
 	
-	// set DEbug checks for session cookie 
+	// set checks for session cookie 
 	console.log(process.env.SESSION_SECRET)
 	console.log(process.env.PORT)
 	console.log(process.env.RHINOCOMPUTE_TOKEN)

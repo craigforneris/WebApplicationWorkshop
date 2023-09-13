@@ -8,7 +8,8 @@ module.exports = router;
 
 /*
 Multer Configuration
- */
+*/
+
 const multer = require("multer");
 let multerStorage = multer.diskStorage({
 	destination: function(req, file, cb) {
@@ -28,6 +29,7 @@ let multerUpload = multer({
 Routes
  */
 // Example route returning what you see using rhino3dm
+
 router.get("/retrieve-something", (req, res) => {
 	let sphere = new rhino3dm.Sphere([1, 2, 3], 12);
 	return res.json({
@@ -49,10 +51,19 @@ router.post("/create-model", multerUpload.single("geo"), (req, res) => {
 		const initModel = rhino3dm.File3dm.fromByteArray(array);
 		const model = new RhinoModel(initModel);
 		model.name = req.file.filename;
+
+		console.log("model: ", model);
+		console.log("model.breps: ", model.breps);
+
+
+
+
 		model.computeMeshes().then((computed) => {
 			try {
 				THREE_Parser.createThreeMeshes(model.breps);
 			} catch (err) {
+				conosle.log("error in meshes: ", err);
+
 				return res.status(500).send(err);
 			}
 			return res.json(model);
@@ -120,6 +131,7 @@ router.post("/slice-model", (req, res) => {
 
 		return res.json({
 			areas: areas,
+
 			curves: curves
 		});
 	});

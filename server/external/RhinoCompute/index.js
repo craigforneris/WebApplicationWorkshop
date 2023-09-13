@@ -1,9 +1,12 @@
 let RhinoCompute = require("compute-rhino3d");
-RhinoCompute.authToken = "bearer " + process.env.RHINOCOMPUTE_TOKEN;
+
+//RhinoCompute.url = "http://localhost:8081/";
+//RhinoCompute.authToken = "bearer " + process.env.RHINOCOMPUTE_TOKEN;
 /**
  * Additional functions related to planes
  * @type {Object}
  */
+
 RhinoCompute.Plane = {
 	/**
 	 * Generating a new plane using a point and a vector normal

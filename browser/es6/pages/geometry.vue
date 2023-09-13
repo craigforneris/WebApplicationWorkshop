@@ -19,6 +19,7 @@ import {
   initThree,
   THREE_Controller
 } from "../libraries/three/create";
+
 import geometryUploader from "../components/geometryUploader.vue";
 import floorEntry from "../components/floorEntry.vue";
 import areaData from "../components/areaData.vue";
@@ -54,8 +55,13 @@ export default {
     },
     addModelToScene(model) {
       const component = this;
-      // console.log('model is here: ', model);
+      
+
+      // DEBUG
+      console.log('model is here: ', model);
+
       component.model = model;
+
       THREE_Controller.resetScene();
       if (model) {
         if (model.breps) {
