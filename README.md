@@ -57,9 +57,10 @@ connecting to atlas
 
 
 https://www.guru99.com/bluebird-promises.htmlhttps://stackoverflow.com/questions/41517477/use-bluebird-for-mongoose-got-bind-is-not-a-function
-
-
   codeName: 'AtlasError'
 }
 
-this gets osvled vby changing the drve rout THat doesnt work trying somethign else.
+remvioed db.on push db.this db.///
+
+
+
