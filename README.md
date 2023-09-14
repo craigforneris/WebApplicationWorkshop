@@ -1,3 +1,5 @@
+# NOTE 2023 still not working yet will local rhino compute
+
 # WebApplicationWorkshop
 
 Web application workshop for AEC Tech 2019: Seattle
